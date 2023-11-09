@@ -105,4 +105,4 @@ jobs:
       shell: bash
 
     - name: Display Jira ticket with links
-      run: cat jira_numbers1.txt 
+      run: cat jira_numbers1.txt  
