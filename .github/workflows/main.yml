@@ -16,5 +16,3 @@ jobs:
     - name: List Tags
       run: |
         git fetch --tags
-    - name: tag
-      run: git tag
