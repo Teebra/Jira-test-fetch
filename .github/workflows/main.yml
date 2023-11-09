@@ -19,4 +19,4 @@ jobs:
     - name: tag
       run: git tag
     - name: describe
-      run: git describe
+      run: git describe --tags
