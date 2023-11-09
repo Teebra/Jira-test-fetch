@@ -36,14 +36,14 @@ jobs:
       shell: bash
 
     - name: Display Jira Numbers
-      run: cat jira_numbers.txt  
+      run: cat jira_numbers.txt
     
     - name: Get jira stories
       run: |
         #!/bin/bash
 
         # Set your Jira URL
-        jira_lynx_url="https://mybhbjbj.atlassian.net/browse"
+        jira_lynx_url="http://myurl"
 
         # Function to get Jira numbers
         getJiraNumbers() {
@@ -105,4 +105,4 @@ jobs:
       shell: bash
 
     - name: Display Jira ticket with links
-      run: cat jira_numbers1.txt  
+      run: cat jira_numbers1.txt 
