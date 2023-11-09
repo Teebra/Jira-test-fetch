@@ -72,7 +72,8 @@ jobs:
             if [[ $currentTag == *RELEASE* ]]; then
                 echo 'Getting commits for a RELEASE branch'
                 git fetch
-                commits=$(git log --pretty=%s "$previousTag..$currentTag" --grep='Pull request')
+                # commits=$(git log --pretty=%s "$previousTag..$currentTag" --grep='Pull request')
+                commits=$(git log --pretty=%s "$previousTag..$currentTag")
             else
                 echo 'Getting commits for a feature branch'
                 commits=$(git log --pretty=%s "$previousTag..$currentTag")
