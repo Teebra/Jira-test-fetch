@@ -36,7 +36,7 @@ jobs:
       shell: bash
 
     - name: Display Jira Numbers
-      run: cat jira_numbers.txt
+      run: cat jira_numbers.txt 
     
     # - name: Get jira stories
     #   run: |
