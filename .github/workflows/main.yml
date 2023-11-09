@@ -43,7 +43,7 @@ jobs:
         #!/bin/bash
 
         # Set your Jira URL
-        jira_lynx_url="http://myurl"
+        jira_lynx_url="https://mybhbjbj.atlassian.net/browse"
 
         # Function to get Jira numbers
         getJiraNumbers() {
