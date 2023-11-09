@@ -1,0 +1,22 @@
+name: List Tags
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  list-tags:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: List Tags
+      run: |
+        git fetch --tags
+    - name: tag
+      run: git tag
+    - name: describe
+      run: git describe
