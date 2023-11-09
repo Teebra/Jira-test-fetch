@@ -15,23 +15,16 @@ jobs:
 
     - name: get commits
       run: |
-        #!/bin/bash
-
-        # Fetch tags from the remote repository
-        git fetch --tags
-
-        # Get the list of tags sorted by commit date and extract the latest tag
         currentTag=$(git tag --sort=committerdate | grep -E '[0-9]' | tail -1)
-
-        # Get the previous tag based on the current tag
-        previousTag=$(git describe --tags --abbrev=0 $currentTag^ 2>/dev/null || echo "No previous tag")
+        
+        previousTag=$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1) 2>/dev/null || echo "No previous tag")
 
         # Output the current and previous tags
         echo "Current tag: $currentTag"
         echo "Previous tag: $previousTag"
 
         # Print all the commits between current and previous tags
-        git log $previousTag..$currentTag --oneline > jira_numbers.txt
+        git log $previousTag..$currentTag --oneline
 
       shell: bash
 
