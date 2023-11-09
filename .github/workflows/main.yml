@@ -38,31 +38,35 @@ jobs:
         getGitCommits() {
             local previousTag="$1"
             local currentTag="$2"
-            
+
             echo "Previous tag: $previousTag"
             echo "Current tag: $currentTag"
-            
-            local commits
-            
-            if [[ $currentTag == *Release* ]]; then
-                echo 'Getting commits for a RELEASE branch'
-                git fetch
-                commits=$(git log --pretty=%s "$previousTag..$currentTag" --grep='Pull request')
-            else
-                echo 'Getting commits for a feature branch'
-                commits=$(git log --pretty=%s "$previousTag..$currentTag")
-            fi
-            
-            local jiraNumbers
-            jiraNumbers=($(echo "$commits" | grep -o -E 'MED-[0-9]+' | sort -u))
 
-            if [ ${#jiraNumbers[@]} -gt 0 ]; then
-                echo "*** There are total ${#jiraNumbers[@]} commits found ***"
-                for jira in "${jiraNumbers[@]}"; do
-                    createJiraLink "$jira"
-                done
+            local commits
+
+            if [ "$previousTag" != "No previous tag" ]; then
+                if [[ $currentTag == *Release* ]]; then
+                    echo 'Getting commits for a RELEASE branch'
+                    git fetch
+                    commits=$(git log --pretty=%s "$previousTag..$currentTag" --grep='Pull request')
+                else
+                    echo 'Getting commits for a feature branch'
+                    commits=$(git log --pretty=%s "$previousTag..$currentTag")
+                fi
+
+                local jiraNumbers
+                jiraNumbers=($(echo "$commits" | grep -o -E 'MED-[0-9]+' | sort -u))
+
+                if [ ${#jiraNumbers[@]} -gt 0 ]; then
+                    echo "*** There are total ${#jiraNumbers[@]} commits found ***"
+                    for jira in "${jiraNumbers[@]}"; do
+                        createJiraLink "$jira"
+                    done
+                else
+                    echo 'No Jira numbers were found in the commits'
+                fi
             else
-                echo 'No Jira numbers were found in the commits'
+                echo 'No previous tag found, skipping git log command.'
             fi
         }
 
