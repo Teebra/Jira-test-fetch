@@ -15,6 +15,7 @@ jobs:
 
     - name: get commits
       run: |
+        #!/bin/bash
         # Get the list of tags sorted by commit date and extract the latest tag
         currentTag=$(git tag --sort=committerdate | grep -E '[0-9]' | tail -1)
 
