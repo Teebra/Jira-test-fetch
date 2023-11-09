@@ -79,7 +79,7 @@ jobs:
             fi
             
             local jiraNumbers
-            jiraNumbers=($(echo "$commits" | grep -o -E 'MED-[0-9]*' | sort -u))
+            jiraNumbers=($(echo "$commits" | grep -o -E 'MED-[0-9]+' | sort -u))
 
             if [ ${#jiraNumbers[@]} -gt 0 ]; then
                 echo "*** There are total ${#jiraNumbers[@]} commits found ***"
