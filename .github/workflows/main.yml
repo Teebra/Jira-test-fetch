@@ -13,67 +13,67 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    # - name: List Tags and Jira ticket
-    #   run: |
-    #     #!/bin/bash
+    - name: List Tags and Jira ticket
+      run: |
+        #!/bin/bash
 
-    #     # Set your Jira URL
-    #     jira_lynx_url="http://myurl"
+        # Set your Jira URL
+        jira_lynx_url="http://myurl"
 
-    #     # Function to get Jira numbers
-    #     getJiraNumbers() {
-    #         local currentTag
-    #         currentTag=$(git tag --sort=committerdate | grep -E '[0-9]' | tail -1)
+        # Function to get Jira numbers
+        getJiraNumbers() {
+            local currentTag
+            currentTag=$(git tag --sort=committerdate | grep -E '[0-9]' | tail -1)
 
-    #         local previousTag
-    #         previousTag=$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1) 2>/dev/null || echo "No previous tag")
+            local previousTag
+            previousTag=$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1) 2>/dev/null || echo "No previous tag")
 
-    #         local jiraNumbers
-    #         jiraNumbers=$(getGitCommits "$previousTag" "$currentTag")
+            local jiraNumbers
+            jiraNumbers=$(getGitCommits "$previousTag" "$currentTag")
 
-    #         echo "$jiraNumbers"
-    #     }
+            echo "$jiraNumbers"
+        }
 
-    #     # Function to get Git commits since the last successful build
-    #     getGitCommits() {
-    #         local previousTag="$1"
-    #         local currentTag="$2"
+        # Function to get Git commits since the last successful build
+        getGitCommits() {
+            local previousTag="$1"
+            local currentTag="$2"
             
-    #         echo "Previous tag: $previousTag"
-    #         echo "Current tag: $currentTag"
+            echo "Previous tag: $previousTag"
+            echo "Current tag: $currentTag"
             
-    #         local commits
+            local commits
             
-    #         if [[ $currentTag == *RELEASE* ]]; then
-    #             echo 'Getting commits for a RELEASE branch'
-    #             git fetch
-    #             commits=$(git log --pretty=%s "$previousTag..$currentTag" --grep='Pull request')
-    #         else
-    #             echo 'Getting commits for a feature branch'
-    #             commits=$(git log --pretty=%s "$previousTag..$currentTag")
-    #         fi
+            if [[ $currentTag == *Release* ]]; then
+                echo 'Getting commits for a RELEASE branch'
+                git fetch
+                commits=$(git log --pretty=%s "$previousTag..$currentTag" --grep='Pull request')
+            else
+                echo 'Getting commits for a feature branch'
+                commits=$(git log --pretty=%s "$previousTag..$currentTag")
+            fi
             
-    #         local jiraNumbers
-    #         jiraNumbers=($(echo "$commits" | grep -o -E 'LM-[0-9]+' | sort -u))
+            local jiraNumbers
+            jiraNumbers=($(echo "$commits" | grep -o -E 'MED-[0-9]+' | sort -u))
 
-    #         if [ ${#jiraNumbers[@]} -gt 0 ]; then
-    #             echo "*** There are total ${#jiraNumbers[@]} commits found ***"
-    #             for jira in "${jiraNumbers[@]}"; do
-    #                 createJiraLink "$jira"
-    #             done
-    #         else
-    #             echo 'No Jira numbers were found in the commits'
-    #         fi
-    #     }
+            if [ ${#jiraNumbers[@]} -gt 0 ]; then
+                echo "*** There are total ${#jiraNumbers[@]} commits found ***"
+                for jira in "${jiraNumbers[@]}"; do
+                    createJiraLink "$jira"
+                done
+            else
+                echo 'No Jira numbers were found in the commits'
+            fi
+        }
 
-    #     # Function to create a Jira link
-    #     createJiraLink() {
-    #         local storyNumber="$1"
-    #         local contextURL="$jira_lynx_url"
-    #         local jiraLink="[${storyNumber}](${contextURL}/${storyNumber})"
-    #         echo "$jiraLink"
-    #     }
+        # Function to create a Jira link
+        createJiraLink() {
+            local storyNumber="$1"
+            local contextURL="$jira_lynx_url"
+            local jiraLink="[${storyNumber}](${contextURL}/${storyNumber})"
+            echo "$jiraLink"
+        }
 
-    #     # Call the main function
-    #     getJiraNumbers
+        # Call the main function
+        getJiraNumbers
 
